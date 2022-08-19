@@ -20,7 +20,7 @@ export class TodoController {
   // Create a todo
   @Post('/')
   async create(@Res() res, @Body() createTodoDTO: CreateTodoDTO) {
-    const newTodo = await this.todoService.addTodo(createTodoDTO);
+    const newTodo = await this.todoService.create(createTodoDTO);
     return res.status(HttpStatus.OK).json({
       message: 'Todo has been submitted successfully!',
       todo: newTodo,
@@ -29,29 +29,32 @@ export class TodoController {
 
   // Fetch a particular todo using ID
   @Get('/:todoID')
-  async getTodo(@Res() res, @Param('todoID') todoID) {
-    const todo = await this.todoService.getTodo(todoID);
+  async get(@Res() res, @Param('todoID') todoID) {
+    const todo = await this.todoService.get(todoID);
+
     if (!todo) {
       throw new NotFoundException('Todo does not exist!');
     }
+
     return res.status(HttpStatus.OK).json(todo);
   }
 
   // Fetch all todos
   @Get('/')
-  async getTodos(@Res() res) {
-    const todos = await this.todoService.getTodos();
+  async list(@Res() res) {
+    const todos = await this.todoService.list();
+
     return res.status(HttpStatus.OK).json(todos);
   }
 
   // Edit a particular todo using ID
   @Put('/')
-  async editTodo(
+  async update(
     @Res() res,
     @Query('todoID') todoID,
     @Body() createTodoDTO: CreateTodoDTO,
   ) {
-    const editedTodo = await this.todoService.editTodo(todoID, createTodoDTO);
+    const editedTodo = await this.todoService.update(todoID, createTodoDTO);
     if (!editedTodo) {
       throw new NotFoundException('Todo does not exist!');
     }
@@ -63,11 +66,13 @@ export class TodoController {
 
   // Delete a todo using ID
   @Delete('/delete')
-  async deleteTodo(@Res() res, @Query('todoID') todoID) {
-    const deletedTodo = await this.todoService.deleteTodo(todoID);
+  async delete(@Res() res, @Query('todoID') todoID) {
+    const deletedTodo = await this.todoService.delete(todoID);
+
     if (!deletedTodo) {
       throw new NotFoundException('Todo does not exist!');
     }
+
     return res.status(HttpStatus.OK).json({
       message: 'Todo has been deleted!',
       todo: deletedTodo,
