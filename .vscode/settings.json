@@ -1,6 +1,8 @@
 {
     "cSpell.words": [
+        "nestexample",
         "nestjs",
+        "ormconfig",
         "todos",
         "typeorm"
     ]

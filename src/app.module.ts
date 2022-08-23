@@ -3,6 +3,10 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TodoModule } from './modules/todo/todo.module';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
+import { Todo } from './entities/todo.entity';
+
+console.log(__dirname + 'src/entities/*.entity.ts');
+
 
 @Module({
   imports: [
@@ -14,8 +18,11 @@ import { LoggingInterceptor } from './interceptors/logging.interceptor';
       username: 'root',
       password: '123456',
       database: 'nestexample',
-      synchronize: false,
-      autoLoadEntities: true,
+      synchronize: true,
+      // autoLoadEntities: true,
+      entities: [Todo],
+      migrations: [__dirname + 'src/migrations/*{.ts}'],
+      migrationsTableName: 'migrations'
     }),
   ],
   controllers: [],
